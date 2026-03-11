@@ -24,16 +24,15 @@ The system is designed to:
 
 ---
 
-
 ## 🔄 Data Pipeline
 
 ```mermaid
-flowchart TD
+graph TD
 A[RemoteOK API] --> B[Fetch Job Data]
-B --> C[Parse & Normalize Records]
+B --> C[Parse and Normalize Records]
 C --> D[Clean Dataset]
-D --> E[Export CSV / Excel / JSON]
-    
+D --> E[Export CSV Excel JSON]
+```
 ---
 
 ## 🖼 Example Output
