@@ -8,7 +8,7 @@ def parse_jobs(data: list[dict]) -> list[JobRecord]:
         if not isinstance(item, dict):
             continue
 
-        # suele venir una fila metadata al principio
+        # API payload often includes a metadata row at the beginning
         title = (item.get("position") or "").strip()
         company = (item.get("company") or "").strip()
 

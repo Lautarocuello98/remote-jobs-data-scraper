@@ -1,40 +1,236 @@
-# Remote Jobs Data Scraper
+# 🌍 Remote Jobs Data Scraper
 
-Scraper en Python para obtener vacantes remotas desde la API de RemoteOK, limpiarlas y exportarlas en CSV, Excel y JSON.
+> Automated Python pipeline that fetches remote job postings from RemoteOK, cleans and normalizes records, and exports production-ready datasets.
 
-## Requisitos
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
+[![Tests: pytest](https://img.shields.io/badge/tests-pytest-green.svg)](#quality-checks)  
+[![Source: RemoteOK](https://img.shields.io/badge/source-RemoteOK-orange.svg)](https://remoteok.com/)
 
-- Python 3.10+
-- Dependencias en `requirements.txt`
+---
 
-## Instalacion
+# Overview
 
-```bash
-pip install -r requirements.txt
+Remote Jobs Data Scraper is a lightweight **data engineering project** focused on collecting and standardizing remote job data with a clear, modular pipeline.
+
+The system is designed to:
+
+- Fetch live job data from `https://remoteok.com/api`
+- Parse only valid job entries
+- Normalize and clean a fixed output schema
+- Remove duplicated postings deterministically
+- Export clean data to CSV, Excel, and JSON
+- Keep runtime behavior configurable through `.env`
+
+---
+
+# 🎬 Demo
+
+Demo video: **Coming soon**
+
+---
+
+# 🖼 Screenshot
+
+Project screenshot: **Coming soon**
+
+---
+
+# 🚀 Features
+
+| Feature | Description |
+|-------|-------------|
+| API Scraping | Retrieves jobs from RemoteOK API using configurable headers and timeout |
+| Robust Parsing | Ignores metadata/invalid rows and keeps only complete job records |
+| Salary Normalization | Builds salary range values from `salary_min` / `salary_max` |
+| Data Cleaning | Trims text, fills defaults, enforces canonical column order |
+| Deduplication | Drops duplicates by `title + company + job_url` |
+| Multi-format Export | Writes raw CSV, clean CSV, Excel, and JSON outputs |
+| Environment Config | Supports `.env` for `USER_AGENT` and `REQUEST_TIMEOUT` |
+| Test Coverage | Includes pytest tests for parsing and cleaning logic |
+
+---
+
+# 📦 Distribution
+
+This repository is maintained as a **technical portfolio project** and reference implementation for a Python ETL-style scraping workflow.
+
+---
+
+# 🏗 Architecture
+
+The project follows a simple modular pipeline:
+
+```
+remote-jobs-data-scraper/
+
+ data/
+    raw/
+       jobs_raw.csv
+    processed/
+       remote_jobs_clean.csv
+
+ output/
+    remote_jobs.xlsx
+    remote_jobs.json
+
+ src/
+    __init__.py
+    config.py       # Environment and path configuration
+    scraper.py      # RemoteOK API request layer
+    parser.py       # Payload -> JobRecord normalization
+    models.py       # Domain dataclass (JobRecord)
+    cleaner.py      # DataFrame schema cleanup and deduplication
+    exporter.py     # CSV / Excel / JSON writers
+    pipeline.py     # End-to-end orchestration
+
+ tests/
+    test_parser.py
+    test_cleaner.py
+
+ main.py            # Application entry point
+ requirements.txt
+ .env.example
+ README.md
+ LICENSE
 ```
 
-Opcional: copia `.env.example` a `.env` y ajusta valores.
+---
 
-## Configuracion (`.env`)
+# Architecture Principles
 
-- `USER_AGENT`: encabezado User-Agent para requests.
-- `REQUEST_TIMEOUT`: timeout en segundos para la llamada HTTP.
+### Configuration First
 
-## Ejecucion
+All key runtime settings are centralized in `src/config.py` and may be overridden using `.env`.
 
-```bash
-python main.py
+---
+
+### Single Responsibility Modules
+
+Each module has one clear concern:
+
+- `scraper.py`: HTTP data retrieval
+- `parser.py`: API payload validation and mapping
+- `cleaner.py`: DataFrame cleanup and standardization
+- `exporter.py`: persistence to output formats
+- `pipeline.py`: execution flow
+
+---
+
+### Deterministic Output Schema
+
+The cleaned dataset always follows the same column order:
+
+```
+title, company, location, tags, salary, date_posted, job_url, source
 ```
 
-## Salidas
+---
+
+# 💼 Data Logic
+
+### Salary Mapping Rule
+
+Salary is generated from API fields:
+
+```
+if salary_min and salary_max: "min-max"
+if only one exists: "value"
+if none exist: null
+```
+
+### Duplicate Handling
+
+Duplicate records are removed using:
+
+```
+title + company + job_url
+```
+
+---
+
+# 📊 Outputs
+
+Running the pipeline generates:
 
 - `data/raw/jobs_raw.csv`
 - `data/processed/remote_jobs_clean.csv`
 - `output/remote_jobs.xlsx`
 - `output/remote_jobs.json`
 
-## Tests
+---
+
+# ⚙️ Setup & Run
+
+### Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+Optional configuration:
+
+```bash
+copy .env.example .env
+```
+
+`.env` keys:
+
+- `USER_AGENT`: HTTP User-Agent header
+- `REQUEST_TIMEOUT`: request timeout in seconds
+
+### Run pipeline
+
+```bash
+python main.py
+```
+
+---
+
+# 🧪 Quality Checks
+
+Run tests with:
 
 ```bash
 pytest -q
 ```
+
+Current test suite validates:
+
+- Parser filtering and field mapping
+- Salary edge cases (including zero values)
+- DataFrame schema consistency
+- Duplicate removal behavior
+
+---
+
+# 🧰 Technical Stack
+
+- Python 3.10+
+- requests
+- pandas
+- openpyxl
+- python-dotenv
+- pytest
+
+---
+
+# 👨‍💻 Author
+
+**Lautaro Cuello**
+
+Python Developer  
+GitHub:  
+https://github.com/Lautarocuello98
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+See the **LICENSE** file for details.
+
+---
+
+If you found this project useful, consider giving this repository a star.
