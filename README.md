@@ -32,7 +32,7 @@ flowchart TD
     B --> C[Parse & Normalize Records]
     C --> D[Clean Dataset]
     D --> E[Export CSV / Excel / JSON]
-    
+```    
 ---
 
 ## 🖼 Example Output
