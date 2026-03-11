@@ -1,6 +1,6 @@
 # 🌍 Remote Jobs Data Scraper
 
-> Professional Python data pipeline to collect remote jobs from RemoteOK, clean records, and export ready-to-use datasets.
+> Production-style Python data pipeline that collects remote jobs from RemoteOK, cleans the dataset, and exports ready-to-use analytics files.
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)  
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
@@ -10,7 +10,7 @@
 
 # ✨ Overview
 
-Remote Jobs Data Scraper is a lightweight ETL-style project focused on:
+Remote Jobs Data Scraper is a lightweight ETL-style data pipeline designed on:
 
 - Fetching live job data from `https://remoteok.com/api`
 - Parsing only valid job postings
@@ -20,15 +20,36 @@ Remote Jobs Data Scraper is a lightweight ETL-style project focused on:
 
 ---
 
-# 🎬 Demo
+# 🔄 Data Pipeline
 
-Demo video: **Coming soon**
+```mermaid
+flowchart TD
+    A[RemoteOK API] --> B[Fetch Job Data]
+    B --> C[Parse Valid Records]
+    C --> D[Clean and Normalize Data]
+    D --> E[Export CSV / Excel / JSON]
+```
 
 ---
 
 # 🖼 Screenshot
 
 ![Dataset Preview](images/excel.png)
+
+---
+
+# 🖥 Example Run
+
+```text
+$ python main.py
+
+Records fetched: 101
+Jobs parsed: 100
+Raw rows: 100
+Clean rows: 100
+
+Pipeline completed successfully.
+```
 
 ---
 
@@ -44,12 +65,6 @@ Demo video: **Coming soon**
 | Multi-format Export | Writes raw CSV, clean CSV, Excel, and JSON outputs |
 | Environment Config | Supports `.env` values for `USER_AGENT` and `REQUEST_TIMEOUT` |
 | Testing | Includes pytest tests for scraper, parser, cleaner, and config |
-
----
-
-# 📦 Distribution
-
-This repository is maintained as a technical portfolio project and reference implementation of a simple Python data pipeline.
 
 ---
 
