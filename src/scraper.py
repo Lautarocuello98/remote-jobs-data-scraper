@@ -1,11 +1,21 @@
 import requests
-from src.config import BASE_URL, HEADERS, REQUEST_TIMEOUT
+
+from src.config import HEADERS, REQUEST_TIMEOUT
 
 
-def fetch_jobs_page(url: str = BASE_URL) -> str:
+API_URL = "https://remoteok.com/api"
+
+
+def fetch_jobs_data() -> list[dict]:
     try:
-        response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
+        response = requests.get(API_URL, headers=HEADERS, timeout=REQUEST_TIMEOUT)
         response.raise_for_status()
-        return response.text
+        data = response.json()
+
+        if not isinstance(data, list):
+            raise RuntimeError("Unexpected API response format.")
+
+        return data
+
     except requests.RequestException as exc:
-        raise RuntimeError(f"Failed to fetch jobs page: {exc}") from exc
+        raise RuntimeError(f"Failed to fetch jobs data: {exc}") from exc

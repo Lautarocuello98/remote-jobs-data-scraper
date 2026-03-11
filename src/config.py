@@ -25,7 +25,8 @@ USER_AGENT = os.getenv(
 )
 
 HEADERS = {
-    "User-Agent": USER_AGENT
+    "User-Agent": USER_AGENT,
+    "Accept": "application/json",
 }
 
 MAX_PAGES = int(os.getenv("MAX_PAGES", "1"))

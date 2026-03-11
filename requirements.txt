@@ -1,6 +1,6 @@
 requests
-beautifulsoup4
 pandas
+beautifulsoup4
 openpyxl
 python-dotenv
 pytest

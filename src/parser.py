@@ -1,36 +1,40 @@
-from bs4 import BeautifulSoup
 from src.models import JobRecord
 
 
-def parse_jobs(html: str) -> list[JobRecord]:
-    soup = BeautifulSoup(html, "html.parser")
+def parse_jobs(data: list[dict]) -> list[JobRecord]:
     jobs: list[JobRecord] = []
 
-    rows = soup.select("tr.job")
+    for item in data:
+        if not isinstance(item, dict):
+            continue
 
-    for row in rows:
-        title_el = row.select_one("h2")
-        company_el = row.select_one("h3")
-        location_el = row.select_one(".location")
-        tag_els = row.select(".tags h3")
-        salary_el = row.select_one(".salary")
-        date_el = row.select_one("time")
-        link_el = row.get("data-href")
-
-        title = title_el.get_text(strip=True) if title_el else ""
-        company = company_el.get_text(strip=True) if company_el else ""
-        location = location_el.get_text(strip=True) if location_el else "Remote"
-        tags = ", ".join(tag.get_text(strip=True) for tag in tag_els) if tag_els else ""
-        salary = salary_el.get_text(strip=True) if salary_el else None
-        date_posted = date_el.get("datetime") if date_el else None
-
-        if link_el and not link_el.startswith("http"):
-            job_url = f"https://remoteok.com{link_el}"
-        else:
-            job_url = link_el or ""
+        # suele venir una fila metadata al principio
+        title = (item.get("position") or "").strip()
+        company = (item.get("company") or "").strip()
 
         if not title or not company:
             continue
+
+        location = (item.get("location") or "Remote").strip()
+
+        tags_raw = item.get("tags") or []
+        if isinstance(tags_raw, list):
+            tags = ", ".join(str(tag).strip() for tag in tags_raw if str(tag).strip())
+        else:
+            tags = str(tags_raw).strip()
+
+        salary_min = item.get("salary_min")
+        salary_max = item.get("salary_max")
+
+        salary = None
+        if salary_min or salary_max:
+            if salary_min and salary_max:
+                salary = f"{salary_min}-{salary_max}"
+            else:
+                salary = str(salary_min or salary_max)
+
+        date_posted = item.get("date")
+        job_url = (item.get("url") or "").strip()
 
         jobs.append(
             JobRecord(
@@ -39,7 +43,7 @@ def parse_jobs(html: str) -> list[JobRecord]:
                 location=location,
                 tags=tags,
                 salary=salary,
-                date_posted=date_posted,
+                date_posted=str(date_posted) if date_posted else None,
                 job_url=job_url,
                 source="RemoteOK",
             )
