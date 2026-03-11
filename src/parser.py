@@ -27,11 +27,13 @@ def parse_jobs(data: list[dict]) -> list[JobRecord]:
         salary_max = item.get("salary_max")
 
         salary = None
-        if salary_min or salary_max:
-            if salary_min and salary_max:
+        has_min = salary_min is not None
+        has_max = salary_max is not None
+        if has_min or has_max:
+            if has_min and has_max:
                 salary = f"{salary_min}-{salary_max}"
             else:
-                salary = str(salary_min or salary_max)
+                salary = str(salary_min if has_min else salary_max)
 
         date_posted = item.get("date")
         job_url = (item.get("url") or "").strip()

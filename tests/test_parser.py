@@ -2,27 +2,42 @@ from src.parser import parse_jobs
 
 
 def test_parse_jobs_returns_list():
-    sample_html = """
-    <table>
-        <tr class="job" data-href="/l/test-job">
-            <td class="company">
-                <h3>Test Company</h3>
-                <h2>Python Developer</h2>
-                <div class="location">Worldwide</div>
-                <div class="tags">
-                    <h3>Python</h3>
-                    <h3>Backend</h3>
-                </div>
-                <div class="salary">$60k-$90k</div>
-                <time datetime="2026-03-11"></time>
-            </td>
-        </tr>
-    </table>
-    """
+    sample_payload = [
+        {"id": 0, "date": "2026-03-11T00:00:00+00:00"},
+        {
+            "position": "Python Developer",
+            "company": "Test Company",
+            "location": "Worldwide",
+            "tags": ["Python", "Backend"],
+            "salary_min": 60000,
+            "salary_max": 90000,
+            "date": "2026-03-11T00:00:00+00:00",
+            "url": "https://remoteok.com/remote-jobs/test-job",
+        },
+    ]
 
-    jobs = parse_jobs(sample_html)
+    jobs = parse_jobs(sample_payload)
 
     assert len(jobs) == 1
     assert jobs[0].title == "Python Developer"
     assert jobs[0].company == "Test Company"
     assert jobs[0].location == "Worldwide"
+    assert jobs[0].tags == "Python, Backend"
+    assert jobs[0].salary == "60000-90000"
+
+
+def test_parse_jobs_handles_zero_salary_values():
+    sample_payload = [
+        {
+            "position": "Junior Python Developer",
+            "company": "Acme",
+            "salary_min": 0,
+            "salary_max": 50000,
+            "url": "https://remoteok.com/remote-jobs/junior-python-dev",
+        }
+    ]
+
+    jobs = parse_jobs(sample_payload)
+
+    assert len(jobs) == 1
+    assert jobs[0].salary == "0-50000"

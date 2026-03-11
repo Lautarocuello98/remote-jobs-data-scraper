@@ -1,5 +1,5 @@
 import pandas as pd
-from src.cleaner import clean_jobs_dataframe
+from src.cleaner import JOB_COLUMNS, clean_jobs_dataframe, jobs_to_dataframe
 
 
 def test_clean_jobs_dataframe_removes_duplicates():
@@ -29,3 +29,10 @@ def test_clean_jobs_dataframe_removes_duplicates():
     cleaned = clean_jobs_dataframe(df)
 
     assert len(cleaned) == 1
+
+
+def test_jobs_to_dataframe_has_expected_columns_when_empty():
+    df = jobs_to_dataframe([])
+
+    assert df.empty
+    assert list(df.columns) == JOB_COLUMNS

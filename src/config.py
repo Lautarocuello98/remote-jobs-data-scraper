@@ -16,7 +16,6 @@ CLEAN_CSV_PATH = PROCESSED_DIR / "remote_jobs_clean.csv"
 OUTPUT_XLSX_PATH = OUTPUT_DIR / "remote_jobs.xlsx"
 OUTPUT_JSON_PATH = OUTPUT_DIR / "remote_jobs.json"
 
-BASE_URL = "https://remoteok.com/remote-dev-jobs"
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "20"))
 USER_AGENT = os.getenv(
     "USER_AGENT",
@@ -28,7 +27,5 @@ HEADERS = {
     "User-Agent": USER_AGENT,
     "Accept": "application/json",
 }
-
-MAX_PAGES = int(os.getenv("MAX_PAGES", "1"))
 
 REQUIRED_DIRS = [RAW_DIR, PROCESSED_DIR, OUTPUT_DIR]

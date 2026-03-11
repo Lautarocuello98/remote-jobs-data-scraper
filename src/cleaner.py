@@ -1,16 +1,22 @@
 import pandas as pd
 from src.models import JobRecord
 
+JOB_COLUMNS = ["title", "company", "location", "tags", "salary", "date_posted", "job_url", "source"]
+
 
 def jobs_to_dataframe(jobs: list[JobRecord]) -> pd.DataFrame:
-    return pd.DataFrame([job.to_dict() for job in jobs])
+    return pd.DataFrame([job.to_dict() for job in jobs], columns=JOB_COLUMNS)
 
 
 def clean_jobs_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-    if df.empty:
-        return df.copy()
-
     cleaned = df.copy()
+    for col in JOB_COLUMNS:
+        if col not in cleaned.columns:
+            cleaned[col] = ""
+    cleaned = cleaned[JOB_COLUMNS]
+
+    if cleaned.empty:
+        return cleaned
 
     text_columns = ["title", "company", "location", "tags", "salary", "job_url", "source"]
     for col in text_columns:
