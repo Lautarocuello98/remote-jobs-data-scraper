@@ -61,38 +61,33 @@ This repository is maintained as a **technical portfolio project** and reference
 
 The project follows a simple modular pipeline:
 
-```
+```text
 remote-jobs-data-scraper/
-
- data/
-    raw/
-       jobs_raw.csv
-    processed/
-       remote_jobs_clean.csv
-
- output/
-    remote_jobs.xlsx
-    remote_jobs.json
-
- src/
-    __init__.py
-    config.py       # Environment and path configuration
-    scraper.py      # RemoteOK API request layer
-    parser.py       # Payload -> JobRecord normalization
-    models.py       # Domain dataclass (JobRecord)
-    cleaner.py      # DataFrame schema cleanup and deduplication
-    exporter.py     # CSV / Excel / JSON writers
-    pipeline.py     # End-to-end orchestration
-
- tests/
-    test_parser.py
-    test_cleaner.py
-
- main.py            # Application entry point
- requirements.txt
- .env.example
- README.md
- LICENSE
+|-- data/
+|   |-- raw/
+|   |   └─- jobs_raw.csv
+|   └─- processed/
+|       └─- remote_jobs_clean.csv
+|-- output/
+|   |-- remote_jobs.xlsx
+|   └─- remote_jobs.json
+|-- src/
+|   |-- __init__.py
+|   |-- config.py       # Environment and path configuration
+|   |-- scraper.py      # RemoteOK API request layer
+|   |-- parser.py       # Payload -> JobRecord normalization
+|   |-- models.py       # Domain dataclass (JobRecord)
+|   |-- cleaner.py      # DataFrame schema cleanup and deduplication
+|   |-- exporter.py     # CSV / Excel / JSON writers
+|   └─- pipeline.py     # End-to-end orchestration
+|-- tests/
+|   |-- test_parser.py
+|   └─- test_cleaner.py
+|-- main.py             # Application entry point
+|-- requirements.txt
+|-- .env.example
+|-- README.md
+└─- LICENSE
 ```
 
 ---
@@ -233,4 +228,4 @@ See the **LICENSE** file for details.
 
 ---
 
-If you found this project useful, consider giving this repository a star.
+⭐If you found this project useful, consider giving this repository a star.
