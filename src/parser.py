@@ -1,6 +1,13 @@
 from src.models import JobRecord
 
 
+def _is_zero_salary_value(value: object) -> bool:
+    try:
+        return float(value) == 0.0
+    except (TypeError, ValueError):
+        return False
+
+
 def parse_jobs(data: list[dict]) -> list[JobRecord]:
     jobs: list[JobRecord] = []
 
@@ -31,9 +38,12 @@ def parse_jobs(data: list[dict]) -> list[JobRecord]:
         has_max = salary_max is not None
         if has_min or has_max:
             if has_min and has_max:
-                salary = f"{salary_min}-{salary_max}"
+                if not (_is_zero_salary_value(salary_min) and _is_zero_salary_value(salary_max)):
+                    salary = f"{salary_min}-{salary_max}"
             else:
-                salary = str(salary_min if has_min else salary_max)
+                salary_value = salary_min if has_min else salary_max
+                if not _is_zero_salary_value(salary_value):
+                    salary = str(salary_value)
 
         date_posted = item.get("date")
         job_url = (item.get("url") or "").strip()

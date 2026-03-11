@@ -41,3 +41,20 @@ def test_parse_jobs_handles_zero_salary_values():
 
     assert len(jobs) == 1
     assert jobs[0].salary == "0-50000"
+
+
+def test_parse_jobs_maps_zero_to_zero_salary_to_none():
+    sample_payload = [
+        {
+            "position": "Support Engineer",
+            "company": "Acme",
+            "salary_min": 0,
+            "salary_max": 0,
+            "url": "https://remoteok.com/remote-jobs/support-engineer",
+        }
+    ]
+
+    jobs = parse_jobs(sample_payload)
+
+    assert len(jobs) == 1
+    assert jobs[0].salary is None
