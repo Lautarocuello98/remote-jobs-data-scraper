@@ -10,6 +10,22 @@ def _is_zero_salary_value(value: object) -> bool:
         return False
 
 
+def _normalize_salary_text(value: object) -> str | None:
+    if value is None:
+        return None
+
+    cleaned = str(value).strip()
+    if not cleaned:
+        return None
+
+    if " " in cleaned:
+        first_word, remainder = cleaned.split(" ", 1)
+        if len(first_word) == 1 and not first_word.isalnum():
+            cleaned = remainder.strip()
+
+    return cleaned or None
+
+
 def _is_within_age_window(date_posted: str | None, max_job_age_days: int | None) -> bool:
     if max_job_age_days is None:
         return True
@@ -110,6 +126,9 @@ def parse_jobs(
                 salary_value = salary_min if has_min else salary_max
                 if not _is_zero_salary_value(salary_value):
                     salary = str(salary_value)
+
+        if salary is None:
+            salary = _normalize_salary_text(item.get("salary"))
 
         date_posted = item.get("date")
         job_url = (item.get("url") or "").strip()

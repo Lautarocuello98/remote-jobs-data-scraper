@@ -12,7 +12,7 @@
 
 Remote Jobs Data Scraper is a lightweight ETL-style data pipeline designed on:
 
-- Fetching live job data from `https://remoteok.com/api`
+- Fetching live job data from RemoteOK's homepage jobs feed (`/?action=get_jobs&premium=0&regular=1`)
 - Parsing only valid job postings
 - Cleaning and normalizing fields with a fixed schema
 - Removing duplicates deterministically
@@ -24,7 +24,7 @@ Remote Jobs Data Scraper is a lightweight ETL-style data pipeline designed on:
 
 ```mermaid
 flowchart TD
-    A[RemoteOK API] --> B[Fetch Job Data]
+    A[RemoteOK Homepage Jobs Feed] --> B[Fetch Job Data]
     B --> C[Parse Valid Records]
     C --> D[Clean and Normalize Data]
     D --> E[Export CSV / Excel / JSON]
@@ -57,7 +57,7 @@ Pipeline completed successfully.
 
 | Feature | Description |
 |-------|-------------|
-| API Scraping | Retrieves jobs from RemoteOK using configurable timeout and headers |
+| Homepage Feed Scraping | Retrieves the same job rows shown on RemoteOK's main page using configurable timeout and headers |
 | Robust Parsing | Skips metadata/invalid rows and keeps valid records only |
 | Salary Normalization | Maps `salary_min` / `salary_max` and treats `0-0` as missing salary |
 | Data Cleaning | Trims text values, fills defaults, and enforces a stable schema |

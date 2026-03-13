@@ -62,6 +62,22 @@ def test_parse_jobs_maps_zero_to_zero_salary_to_none():
     assert jobs[0].salary is None
 
 
+def test_parse_jobs_uses_salary_text_when_numeric_salary_missing():
+    sample_payload = [
+        {
+            "position": "Senior Frontend Engineer",
+            "company": "Level",
+            "salary": "$180k - $180k",
+            "url": "https://remoteok.com/remote-jobs/test-job",
+        }
+    ]
+
+    jobs = parse_jobs(sample_payload)
+
+    assert len(jobs) == 1
+    assert jobs[0].salary == "$180k - $180k"
+
+
 def test_parse_jobs_applies_keyword_tag_and_location_filters():
     sample_payload = [
         {
