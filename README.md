@@ -63,7 +63,7 @@ Pipeline completed successfully.
 | Data Cleaning | Trims text values, fills defaults, and enforces a stable schema |
 | Deduplication | Removes duplicates by `title + company + job_url` |
 | Multi-format Export | Writes raw CSV, clean CSV, Excel, and JSON outputs |
-| Environment Config | Supports `.env` values for `USER_AGENT` and `REQUEST_TIMEOUT` |
+| Environment Config | Supports `.env` values for request settings and search filters |
 | Testing | Includes pytest tests for scraper, parser, cleaner, and config |
 
 ---
@@ -181,6 +181,11 @@ copy .env.example .env
 
 - `USER_AGENT`
 - `REQUEST_TIMEOUT`
+- `JOB_KEYWORD` (text search over title/company/location/tags)
+- `JOB_TAGS` (comma-separated tags, e.g. `python, backend`)
+- `JOB_LOCATION` (substring match over location)
+- `ONLY_REMOTE_LOCATION` (`true/false`)
+- `MAX_JOB_AGE_DAYS` (positive integer, e.g. `7`)
 
 ### Run
 

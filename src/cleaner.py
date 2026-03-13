@@ -27,6 +27,10 @@ def clean_jobs_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     cleaned["source"] = cleaned["source"].replace("", "RemoteOK")
 
     cleaned = cleaned.drop_duplicates(subset=["title", "company", "job_url"])
-    cleaned = cleaned.sort_values(by=["company", "title"]).reset_index(drop=True)
+    cleaned = cleaned.sort_values(
+        by=["date_posted", "company", "title"],
+        ascending=[False, True, True],
+        na_position="last",
+    ).reset_index(drop=True)
 
     return cleaned
